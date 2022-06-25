@@ -28,14 +28,22 @@ router.post(`/`, async (req, res) => {
 
 router.get(`/`, async (req, res) => {
     try {
-        const products = await Product.find();
+        const productList = await Product.find();
+        if (!productList) {
+            res
+            .status(500)
+            .send({
+                success: false,
+            })
+        }
+
         res
             .status(201)
-            .send(products);
+            .send(productList);
     } catch (err) {
         res
             .status(500)
-            send({
+            .send({
                 err,
                 success: false,
             })
