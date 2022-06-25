@@ -13,8 +13,8 @@ const app = express();
 const api = process.env.API_URL;
 const connectionString = process.env.CONNECTION_STRING;
 
-app.use(cors);
-app.options('*', cors());
+// app.use(cors);
+// app.options('*', cors());
 
 app.use(express.json());
 app.use(morgan('tiny'));

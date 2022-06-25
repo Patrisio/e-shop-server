@@ -1,13 +1,12 @@
 const express = require('express');
 const {Category} = require('../models/category');
-const {Product} = require('../models/product');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-        const categoryList = await Product.find();
+        const categoryList = await Category.find();
         if (!categoryList) {
-            res
+            return res
                 .status(500)
                 .send({
                     success: false,
@@ -39,24 +38,30 @@ router.post('/', async (req, res) => {
     category = await category.save();
 
     if (!category) {
-        res
+        return res
             .status(404)
-            .send('Категория не может быть создана');
+            .send({
+                success: false,
+                message: 'Категория не может быть создана',
+            });
     }
 
     res
         .status(201)
-        .send('Категория создана');
+        .send({
+            success: true,
+            message: 'Категория создана',
+        });
 });
 
 router.delete('/:categoryId', async (req, res) => {
     try {
-        const categoryId = req.params.id;
+        const categoryId = req.params.categoryId;
 
         const category = await Category.findByIdAndDelete(categoryId);
     
         if (!category) {
-            req
+            return res
                 .status(404)
                 .send({
                     success: false,
@@ -64,19 +69,19 @@ router.delete('/:categoryId', async (req, res) => {
                 });
         }
     
-        req
+        res
             .status(201)
             .send({
                 success: true,
                 message: 'Категория успешно удалена',
             });
     } catch (err) {
-        req
-        .status(500)
-        .send({
-            success: false,
-            error: err,
-        });
+        res
+            .status(500)
+            .send({
+                success: false,
+                error: err,
+            });
     }
 });
 

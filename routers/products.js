@@ -30,11 +30,11 @@ router.get(`/`, async (req, res) => {
     try {
         const productList = await Product.find();
         if (!productList) {
-            res
-            .status(500)
-            .send({
-                success: false,
-            })
+            return res
+                .status(500)
+                .send({
+                    success: false,
+                })
         }
 
         res
