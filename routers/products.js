@@ -275,6 +275,9 @@ router.get('/', async (req, res) => {
             };
         }
         const featuredProducts = await Product.find(filter).populate('category');
+        featuredProducts.map(p => {
+            console.log(p.toJSON({virtuals: true}));
+        });
         
         if (!featuredProducts) {
             return res
